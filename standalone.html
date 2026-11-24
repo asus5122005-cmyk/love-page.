@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أهلاً يا سندريلا 🎀</title>
+  <meta name="description" content="رسالة صغيرة من القلب.. مخفية ورا قفل بحب" />
+  <meta name="theme-color" content="#12071f" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- خطوط عربية (لو مفيش إنترنت هيرجع للخط الافتراضي تلقائياً) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700;900&family=Lemonada:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+/* =========================================================
+   الصفحة ملوّنة وجريئة — كل الألوان والحاجات في المتغيرات دي
+   ========================================================= */
+:root{
+  --bg1:#12071f;
+  --bg2:#2a0f3d;
+  --bg3:#4a1148;
+  --pink:#ff4d8d;
+  --pink-deep:#ff2d75;
+  --pink-soft:#ff8fab;
+  --gold:#ffd166;
+  --violet:#c77dff;
+  --ink:#fff6fb;
+  --muted:#e9c7de;
+  --glass:rgba(255,255,255,.08);
+  --glass-border:rgba(255,255,255,.2);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+/* مهم: قاعدة [hidden] الافتراضية في المتصفح بتتلغي بأي display من الكود بتاعنا،
+   فبنفرضها عشان الأقسام المخفية تفضل مخفية فعلاً */
+[hidden]{ display:none !important; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:'Cairo','Segoe UI',Tahoma,sans-serif;
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+  /* منع تكبير النص التلقائي في كروم أندرويد */
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  /* بدون لون تظليل ضغط على الأزرار في الموبايل */
+  -webkit-tap-highlight-color:transparent;
+  background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 55%,var(--bg3) 100%);
+  background-size:200% 200%;
+  animation:bgShift 18s ease-in-out infinite;
+}
+
+@keyframes bgShift{
+  0%,100%{ background-position:0% 50%; }
+  50%{ background-position:100% 50%; }
+}
+
+::selection{ background:var(--pink); color:#fff; }
+
+/* خلفية القلوب */
+#bg{
+  position:fixed; inset:0;
+  z-index:0; pointer-events:none;
+}
+
+/* ومضة الفتح */
+#flash{
+  position:fixed; inset:0; z-index:50; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 50%,
+    rgba(255,255,255,.95),
+    rgba(255,77,141,.6) 38%,
+    rgba(199,125,255,.25) 58%,
+    transparent 72%);
+}
+#flash.is-on{ animation:flash 1.1s ease-out forwards; }
+@keyframes flash{
+  0%{ opacity:0; }
+  18%{ opacity:1; }
+  100%{ opacity:0; }
+}
+
+/* ================= الأزرار ================= */
+.btn{
+  display:inline-block;
+  border:0; cursor:pointer;
+  touch-action:manipulation; /* استجابة أسرع للضغط على الموبايل */
+  font-family:inherit; font-weight:700; font-size:1.1rem;
+  color:#fff; text-decoration:none;
+  padding:16px 38px; border-radius:999px;
+  background:linear-gradient(120deg,var(--pink-deep),var(--pink) 45%,var(--violet));
+  background-size:200% 200%;
+  box-shadow:0 12px 35px rgba(255,45,117,.45), 0 0 30px rgba(199,125,255,.3);
+  transition:transform .2s ease, box-shadow .2s ease, background-position .4s ease;
+}
+.btn:hover{ transform:translateY(-3px) scale(1.03); background-position:100% 50%;
+  box-shadow:0 18px 45px rgba(255,45,117,.55), 0 0 45px rgba(199,125,255,.45); }
+.btn:active{ transform:scale(.97); }
+.btn.is-busy{ pointer-events:none; opacity:.85; }
+
+.btn--ghost{
+  background:transparent;
+  border:2px solid rgba(255,255,255,.55);
+  box-shadow:none;
+  backdrop-filter:blur(6px);
+}
+.btn--ghost:hover{
+  background:rgba(255,255,255,.12);
+  box-shadow:0 0 30px rgba(255,255,255,.25);
+}
+
+/* ================= شاشة القفل ================= */
+.gate{
+  position:relative; z-index:10;
+  min-height:100vh;
+  min-height:100dvh; /* ارتفاع حقيقي في كروم أندرويد مع شريط العنوان */
+  display:grid; place-items:center;
+  padding:30px 18px;
+  transition:opacity .6s ease, transform .6s ease;
+}
+.gate.is-gone{ opacity:0; transform:scale(.95) translateY(-30px); pointer-events:none; }
+
+.gate__card{
+  width:min(560px,100%);
+  text-align:center;
+  padding:clamp(28px,6vw,52px) clamp(20px,5vw,46px);
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:34px;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 70px rgba(255,77,141,.28);
+  animation:cardIn .9s cubic-bezier(.2,.8,.25,1) both;
+}
+@keyframes cardIn{
+  from{ opacity:0; transform:translateY(40px) scale(.94); }
+  to{ opacity:1; transform:none; }
+}
+.gate__card.is-shake{ animation:shake .55s ease; }
+@keyframes shake{
+  10%,90%{ transform:translateX(-2px); }
+  20%,80%{ transform:translateX(5px); }
+  30%,50%,70%{ transform:translateX(-8px); }
+  40%,60%{ transform:translateX(8px); }
+}
+
+/* قلب القفل بحلقات نابضة */
+.gate__heartWrap{
+  position:relative;
+  width:130px; height:130px;
+  margin:0 auto 22px;
+  display:grid; place-items:center;
+}
+.gate__heart{
+  font-size:62px; line-height:1;
+  filter:drop-shadow(0 8px 22px rgba(255,45,117,.8));
+  animation:beat 1.6s ease-in-out infinite;
+  z-index:2;
+}
+@keyframes beat{
+  0%,100%{ transform:scale(1); }
+  30%{ transform:scale(1.16); }
+  50%{ transform:scale(1.04); }
+  70%{ transform:scale(1.12); }
+}
+.gate__ring{
+  position:absolute; inset:0;
+  border-radius:50%;
+  border:2px solid rgba(255,77,141,.75);
+  animation:ring 2s ease-out infinite;
+}
+.gate__ring--2{ animation-delay:1s; }
+@keyframes ring{
+  from{ transform:scale(.55); opacity:.9; }
+  to{ transform:scale(1.25); opacity:0; }
+}
+
+.gate__kicker{
+  color:var(--gold); font-weight:700; letter-spacing:1px;
+  font-size:.95rem; margin-bottom:6px;
+}
+.gate__title{
+  font-family:'Lemonada','Cairo',cursive;
+  font-size:clamp(2rem,7vw,3rem);
+  background:linear-gradient(90deg,var(--gold),var(--pink-soft),var(--violet),var(--gold));
+  background-size:300% 100%;
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+  animation:shine 5s linear infinite;
+  margin-bottom:12px;
+}
+@keyframes shine{ to{ background-position:300% 0; } }
+
+.gate__text{ color:var(--muted); font-size:1.05rem; line-height:1.9; margin-bottom:26px; }
+
+.gate__date{
+  display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.gate__date select{
+  font-family:inherit; font-size:1.05rem; font-weight:700;
+  color:#fff; text-align:center;
+  padding:14px 12px; border-radius:16px;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(0,0,0,.32);
+  cursor:pointer; min-width:104px;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.gate__date select:focus{
+  outline:none; border-color:var(--pink);
+  box-shadow:0 0 0 4px rgba(255,77,141,.28);
+}
+.gate__date option{ color:#1a1a1a; background:#fff; }
+
+.gate__msg{
+  min-height:28px; margin-top:16px;
+  font-weight:700; color:var(--pink-soft);
+}
+.gate__hint{
+  margin-top:6px; font-size:.95rem; color:var(--gold);
+  background:rgba(255,209,102,.12);
+  border:1px dashed rgba(255,209,102,.55);
+  border-radius:14px; padding:10px 14px;
+}
+
+/* ================= الصفحة بعد الفتح ================= */
+.page{
+  position:relative; z-index:5;
+  opacity:0;
+}
+.page.is-visible{ animation:pageIn 1s ease .15s both; }
+@keyframes pageIn{ from{ opacity:0; transform:translateY(24px); } to{ opacity:1; transform:none; } }
+
+/* ظهور الأقسام عند التمرير */
+.reveal{
+  opacity:0; transform:translateY(36px);
+  transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.is-visible{ opacity:1; transform:none; }
+
+section{ padding:70px 20px; max-width:1100px; margin:0 auto; }
+
+.section__title{
+  font-family:'Lemonada','Cairo',cursive;
+  text-align:center;
+  font-size:clamp(1.6rem,5vw,2.6rem);
+  color:var(--gold);
+  margin-bottom:40px;
+  text-shadow:0 0 30px rgba(255,209,102,.45);
+}
+
+/* ================= الهيرو ================= */
+.hero{
+  min-height:92vh;
+  min-height:92dvh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; gap:16px;
+  padding-top:60px;
+}
+.hero__kicker{
+  color:var(--pink-soft); font-weight:700; font-size:1.05rem;
+  letter-spacing:2px;
+}
+.hero__title{
+  font-family:'Lemonada','Cairo',cursive;
+  font-size:clamp(2.3rem,8vw,5rem);
+  line-height:1.5;
+  background:linear-gradient(90deg,var(--gold),var(--pink-soft),var(--violet),var(--gold));
+  background-size:300% 100%;
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+  animation:shine 6s linear infinite;
+  filter:drop-shadow(0 10px 35px rgba(255,77,141,.35));
+}
+.hero__sub{ color:var(--muted); font-size:clamp(1rem,2.5vw,1.25rem); max-width:640px; line-height:2; }
+
+/* عداد الأيام */
+.counter__label{ color:var(--gold); font-weight:700; margin-top:24px; }
+.counter{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+.counter__box{
+  min-width:96px;
+  padding:18px 14px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:24px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 15px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.counter__box:hover{ transform:translateY(-6px) scale(1.05);
+  box-shadow:0 22px 50px rgba(0,0,0,.45), 0 0 30px rgba(255,77,141,.4); }
+.counter__num{
+  display:block;
+  font-size:clamp(1.7rem,5vw,2.7rem);
+  font-weight:900;
+  background:linear-gradient(180deg,#fff,var(--gold));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.counter__unit{ color:var(--muted); font-size:.9rem; font-weight:700; }
+
+/* ================= الرسالة ================= */
+.letter__card{
+  position:relative;
+  background:rgba(255,255,255,.07);
+  border:1px solid var(--glass-border);
+  border-radius:34px;
+  padding:clamp(30px,6vw,64px) clamp(22px,6vw,70px);
+  backdrop-filter:blur(14px);
+  box-shadow:0 35px 90px rgba(0,0,0,.5), 0 0 80px rgba(199,125,255,.22);
+  overflow:hidden;
+}
+.letter__card::before{
+  content:""; position:absolute; top:-70px; left:-70px;
+  width:220px; height:220px; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,77,141,.55),transparent 70%);
+}
+.letter__card::after{
+  content:""; position:absolute; bottom:-80px; right:-80px;
+  width:260px; height:260px; border-radius:50%;
+  background:radial-gradient(circle,rgba(199,125,255,.45),transparent 70%);
+}
+.letter__stamp{
+  position:absolute; top:22px; left:26px;
+  font-size:44px; transform:rotate(-15deg);
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.4));
+  animation:beat 2.4s ease-in-out infinite;
+}
+.letter__body{ position:relative; z-index:2; }
+
+.line{
+  font-family:'Aref Ruqaa','Amiri',serif;
+  font-size:clamp(1.15rem,2.8vw,1.6rem);
+  line-height:2.3;
+  color:#ffeef6;
+  margin-bottom:22px;
+  opacity:0; transform:translateY(18px);
+  transition:opacity .9s ease, transform .9s ease;
+  transition-delay:calc(var(--i) * .45s);
+}
+.letter__card.is-open .line{ opacity:1; transform:none; }
+.line:first-child{ color:var(--gold); font-weight:700; font-size:clamp(1.3rem,3.4vw,1.9rem); }
+
+.letter__sign{
+  position:relative; z-index:2;
+  margin-top:34px; text-align:left;
+  font-family:'Lemonada','Cairo',cursive;
+  font-size:clamp(1.1rem,3vw,1.5rem);
+  color:var(--pink-soft);
+  line-height:2;
+  opacity:0; transform:translateY(18px);
+  transition:.9s ease 2s;
+}
+.letter__card.is-open .letter__sign{ opacity:1; transform:none; }
+.letter__card.is-open{ animation:cardIn .9s ease both; }
+
+/* ================= الأسباب ================= */
+.reasons__grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.reason{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:26px;
+  padding:28px 22px;
+  text-align:center;
+  backdrop-filter:blur(10px);
+  transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.reason:hover{
+  transform:translateY(-8px) rotate(-1deg);
+  border-color:var(--pink);
+  box-shadow:0 25px 55px rgba(0,0,0,.45), 0 0 40px rgba(255,77,141,.4);
+}
+.reason__emoji{ font-size:38px; display:block; margin-bottom:12px; }
+.reason__text{ font-weight:700; line-height:1.9; color:#ffe9f3; font-size:1.05rem; }
+
+/* ================= الفوتر ================= */
+.footer{ text-align:center; padding-bottom:70px; }
+.footer p{ font-weight:700; color:var(--pink-soft); font-size:1.1rem; }
+.footer__date{ margin-top:8px; color:var(--muted); font-weight:400 !important; font-size:.95rem !important; }
+
+/* ================= أسئلة القفل والرسالة ================= */
+.gate__q{
+  font-family:'Lemonada','Cairo',cursive;
+  font-size:clamp(1.1rem,4vw,1.5rem);
+  color:#fff; line-height:1.9;
+  margin-bottom:20px;
+}
+.gate__opts{ display:grid; gap:12px; }
+
+/* زرار الاختيارات (بيتستخدم في سؤال القفل وسؤال الرسالة) */
+.opt{
+  font-family:inherit; font-size:1.05rem; font-weight:700;
+  touch-action:manipulation;
+  color:#fff; text-align:center; cursor:pointer;
+  padding:15px 18px; border-radius:18px;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);
+  transition:transform .2s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.opt:hover{
+  transform:translateY(-3px);
+  background:rgba(255,77,141,.28);
+  border-color:var(--pink);
+  box-shadow:0 12px 30px rgba(255,77,141,.4);
+}
+.opt:active{ transform:scale(.97); }
+.opt.is-wrong{ animation:shake .5s ease; border-color:#ff2d75; background:rgba(255,45,117,.3); }
+.opt.is-correct{
+  background:linear-gradient(120deg,#16a34a,#4ade80);
+  border-color:transparent; color:#052e12;
+  box-shadow:0 12px 35px rgba(74,222,128,.5);
+  transform:translateY(-3px) scale(1.03);
+}
+
+.gate__msg.is-ok{ color:#7dffa8; }
+
+/* ---- سؤال فوق الرسالة ---- */
+.quiz{
+  position:relative; z-index:2;
+  text-align:center;
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--glass-border);
+  border-radius:34px;
+  padding:clamp(26px,5vw,50px) clamp(20px,5vw,50px);
+  backdrop-filter:blur(14px);
+  box-shadow:0 30px 70px rgba(0,0,0,.45), 0 0 70px rgba(255,209,102,.2);
+  margin-bottom:34px;
+}
+.quiz__emoji{ font-size:46px; display:block; margin-bottom:8px; }
+.quiz__label{ color:var(--gold); font-weight:700; letter-spacing:1px; margin-bottom:8px; }
+.quiz__q{
+  font-family:'Lemonada','Cairo',cursive;
+  font-size:clamp(1.15rem,3.6vw,1.7rem);
+  line-height:1.9; margin-bottom:26px;
+}
+.quiz__opts{
+  display:grid; gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+}
+.quiz__msg{ min-height:30px; margin-top:16px; font-weight:700; color:var(--pink-soft); }
+.quiz__msg.is-ok{ color:#7dffa8; }
+.quiz__hint{
+  margin-top:8px; font-size:.95rem; color:var(--gold);
+  background:rgba(255,209,102,.12);
+  border:1px dashed rgba(255,209,102,.55);
+  border-radius:14px; padding:10px 14px;
+}
+
+/* ---- زرار الهيرو ---- */
+.hero__cta{ margin-top:6px; }
+
+/* ================= قلوب المؤشر ================= */
+.trail{
+  position:fixed; z-index:60; pointer-events:none;
+  font-size:18px; line-height:1;
+  animation:trailUp .9s ease-out forwards;
+}
+@keyframes trailUp{
+  from{ opacity:1; transform:translate(0,0) scale(1); }
+  to{ opacity:0; transform:translate(var(--dx),-52px) scale(.4) rotate(var(--rot)); }
+}
+
+/* ================= موبايل ================= */
+@media (max-width:520px){
+  .gate__date select{ min-width:0; flex:1 1 30%; }
+  .counter__box{ min-width:74px; padding:14px 8px; }
+  .letter__stamp{ font-size:32px; top:14px; left:14px; }
+  section{ padding:55px 16px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.15s !important; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- خلفية القلوب المتحرّكة -->
+  <canvas id="bg" aria-hidden="true"></canvas>
+
+  <!-- ومضة ضوء عند فتح القفل -->
+  <div id="flash" aria-hidden="true"></div>
+
+  <noscript>
+    <p style="text-align:center;padding:40px;font-family:sans-serif">
+      لازم تفعّل JavaScript عشان الصفحة تشتغل ❤️
+    </p>
+  </noscript>
+
+  <!-- ============ شاشة القفل + الأسئلة ============ -->
+  <section class="gate" id="gate">
+    <div class="gate__card" id="gateCard">
+
+      <div class="gate__heartWrap">
+        <span class="gate__ring"></span>
+        <span class="gate__ring gate__ring--2"></span>
+        <span class="gate__heart">❤️</span>
+      </div>
+
+      <p class="gate__kicker" id="gateKicker">مقفولة بقلوب كتير</p>
+      <h1 class="gate__title" id="gateTitle">مفتاح القلب</h1>
+      <p class="gate__text" id="gateText">عشان الصفحة تتفتح، اكتبي التاريخ اللي اتقابلنا فيه ❤️</p>
+
+      <!-- الخطوة 1: التاريخ -->
+      <div id="dateBlock">
+        <div class="gate__date">
+          <select id="day" aria-label="اليوم"></select>
+          <select id="month" aria-label="الشهر"></select>
+          <select id="year" aria-label="السنة"></select>
+        </div>
+        <button class="btn" id="unlockBtn" type="button">افتحي القلب ❤</button>
+      </div>
+
+      <!-- الخطوة 2 و3: أسئلة بعد التاريخ -->
+      <div class="gate__quiz" id="quizBlock" hidden>
+        <p class="gate__q" id="quizQ"></p>
+        <div class="gate__opts" id="quizOpts"></div>
+      </div>
+
+      <p class="gate__msg" id="gateMsg" role="status"></p>
+      <p class="gate__hint" id="gateHint" hidden></p>
+    </div>
+  </section>
+
+  <!-- ============ الصفحة بعد الفتح ============ -->
+  <main class="page" id="page" hidden>
+
+    <header class="hero reveal">
+      <p class="hero__kicker" id="kicker"></p>
+      <h1 class="hero__title" id="title"></h1>
+      <p class="hero__sub" id="subtitle"></p>
+
+      <a class="btn hero__cta" href="#letter" id="cta">دوسي هنا عشان تقري الرسالة 💌</a>
+
+      <p class="counter__label">من يوم ما اتقابلنا لحد النهارده ☺️</p>
+      <div class="counter">
+        <div class="counter__box">
+          <span class="counter__num" id="cDays">0</span>
+          <span class="counter__unit">يوم</span>
+        </div>
+        <div class="counter__box">
+          <span class="counter__num" id="cHours">0</span>
+          <span class="counter__unit">ساعة</span>
+        </div>
+        <div class="counter__box">
+          <span class="counter__num" id="cMins">0</span>
+          <span class="counter__unit">دقيقة</span>
+        </div>
+        <div class="counter__box">
+          <span class="counter__num" id="cSecs">0</span>
+          <span class="counter__unit">ثانية</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ الرسالة ============ -->
+    <section class="letter reveal" id="letter">
+
+      <!-- سؤال فوق الرسالة -->
+      <div class="quiz" id="loveQuiz">
+        <span class="quiz__emoji" aria-hidden="true">💭</span>
+        <p class="quiz__label">السؤال الأول..</p>
+        <p class="quiz__q" id="loveQ"></p>
+        <div class="quiz__opts" id="loveOpts"></div>
+        <p class="quiz__msg" id="loveMsg" role="status"></p>
+      </div>
+
+      <!-- الرسالة نفسها -->
+      <div class="letter__card" id="letterCard" hidden>
+        <span class="letter__stamp" aria-hidden="true">💌</span>
+        <h2 class="section__title">رسالة مني ليكِ</h2>
+        <div class="letter__body" id="message"></div>
+        <p class="letter__sign" id="sign"></p>
+      </div>
+    </section>
+
+    <!-- ============ الأسباب ============ -->
+    <section class="reasons reveal">
+      <h2 class="section__title">ليه بحبك؟ 💖</h2>
+      <div class="reasons__grid" id="reasons"></div>
+    </section>
+
+    <footer class="footer reveal">
+      <p id="footerText"></p>
+      <p class="footer__date" id="today"></p>
+    </footer>
+  </main>
+
+  <script>
+/* ==========================================================
+   ======  ده كل اللي محتاج تعدله — الكونفج الأول في الملف  ======
+   ========================================================== */
+const CONFIG = {
+
+  /* 1) تاريخ يوم ما اتقابلتوا (28 فبراير 2025) */
+  correctDate: { year: 2025, month: 2, day: 28 },
+
+  /* تلميح التاريخ لو غلط مرتين (اختياري) */
+  dateHint: "تلميح: آخر يوم في فبراير.. والجو كان جميل 😍",
+
+  /* 2) أسئلة القفل بعد التاريخ (يوم الجمعة + معاد القطر) */
+  gateQuestions: [
+    {
+      q: "اليوم كان إيه؟ 📅",
+      options: ["السبت", "الجمعة", "الأحد", "الخميس"],
+      answer: "الجمعة",
+      fail: "أوه.. مش دي، جربي تاني ❤️",
+      ok: "أيوه! يوم الجمعة 😍",
+      hint: "تلميح: آخر يوم في الأسبوع قبل السبت 😌"
+    },
+    {
+      q: "معاد القطر كان الساعة كام؟ 🚆",
+      options: ["الساعة 10", "الساعة 12", "الساعة 4", "الساعة 9"],
+      answer: "الساعة 12",
+      fail: "لسه غلط.. فكّري في معاد القطر 😉",
+      ok: "بالظبط! الساعة 12 🎉",
+      hint: "تلميح: في نص اليوم بالظبط 😉"
+    }
+  ],
+
+  /* نطاق السنوات في القائمة */
+  yearRange: { from: 2018, to: 2026 },
+
+  /* 3) كلام صفحة الترحيب بعد فتح القفل */
+  kicker: "أخيرًا.. فتحتي القفل ❤️",
+  title: "أهلاً يا سندريلا 🎀",
+  subtitle: "يا أحلى صدفة في حياتي.. ربنا يخليكِ ليا ❤️",
+  cta: "دوسي هنا عشان تقري الرسالة 💌",
+
+  /* 4) السؤال اللي فوق الرسالة */
+  loveQuestion: {
+    q: "تفتكري إيه أكتر حاجة بحبها فيكي؟ 💭",
+    options: ["جمالك وشك الحلو", "ضحكتك وروحك الطفولية", "عينيك المليانة نور", "عطفك وحنانك"],
+    answer: "ضحكتك وروحك الطفولية",
+    fail: [
+      "أوه.. مش دي، جربي تاني 😌",
+      "لسه غلط.. بس إنتي قريبة أوي 😅",
+      "فكّري في اللي بيضحك قلبي كل يوم 😉"
+    ],
+    hint: "تلميح: ده اللي بيضحكني أول ما بشوفك 😊",
+    ok: "أيوه بالظبط! وبحب كل حاجة فيكِ ❤️"
+  },
+
+  /* 5) الرسالة */
+  message: [
+    "سندريلا الحلوة.. أول حاجة عايز أقولها لكِ إن قلبي ده بتاعكِ أنتِ بس، وعمري ما هفكر أكون مع حد غيركِ.",
+    "أوعدكِ إني أكون جنبكِ في كل وقت.. في الحلو والصعب، ومهما حصل في الدنيا عمرني ما هسيبكِ ولا هبعد عنكِ.",
+    "أنتِ أمانة في رقبتي، وضحكتكِ أجمل حاجة بسمعها، وهفضل أحبكِ لحد آخر نفس فيّا.. وبعده كمان.",
+    "ربنا يخليكِ ليا ويعمل فيّا الخير عشان أكمل معاكِ.. أنا بحبكِ أكتر مما الكلام يقدر يقول ❤️"
+  ],
+
+  /* توقيع آخر الرسالة */
+  signName: "بحبكِ يا سندريلا.. لآخر نفس ❤️",
+
+  /* 6) أسباب الحب (زوّدي أو نقصني براحتك) */
+  reasons: [
+    "لإنكِ سبب ابتسامتي كل يوم",
+    "لإنكِ بتسمعيّي حتى وإنا بكرر",
+    "لإن وجودكِ بيخلي الدنيا أهدى",
+    "لإنكِ أجمل مفاجأة حصلتلي",
+    "لإنكِ بتصدقيني حتى في صمتنا",
+    "لإن روحكِ الطفولية أجمل حاجة فيكِ"
+  ],
+
+  footer: "صُنع بحب.. لكِ يا سندريلا ❤️",
+
+  emojis: ["💖","🌹","✨","🥰","🌙","☀️","💫","🎀"]
+};
+
+/* ==========================================================
+   ============  كود التشغيل (مش محتاج تعدله)  ============
+   ========================================================== */
+const $ = (id) => document.getElementById(id);
+const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let gateFails = 0;   // محاولات غلط في سؤال القفل الحالي
+let loveFails = 0;   // محاولات غلط في سؤال الرسالة
+
+/* ---------- تعبئة القوائم المنسدلة ---------- */
+function buildSelects(){
+  const daySel = $("day"), monthSel = $("month"), yearSel = $("year");
+
+  daySel.appendChild(new Option("اليوم", ""));
+  for (let d = 1; d <= 31; d++) daySel.appendChild(new Option(d, d));
+
+  monthSel.appendChild(new Option("الشهر", ""));
+  MONTHS.forEach((m, i) => monthSel.appendChild(new Option(m, i + 1)));
+
+  yearSel.appendChild(new Option("السنة", ""));
+  for (let y = CONFIG.yearRange.to; y >= CONFIG.yearRange.from; y--) yearSel.appendChild(new Option(y, y));
+}
+
+/* ---------- تعبئة محتوى الصفحة من الكونفج ---------- */
+function fillContent(){
+  $("kicker").textContent   = CONFIG.kicker;
+  $("title").textContent    = CONFIG.title;
+  $("subtitle").textContent = CONFIG.subtitle;
+  $("cta").textContent      = CONFIG.cta;
+  $("sign").textContent     = CONFIG.signName;
+  $("footerText").textContent = CONFIG.footer;
+  $("loveQ").textContent    = CONFIG.loveQuestion.q;
+
+  const msg = $("message");
+  CONFIG.message.forEach((text, i) => {
+    const p = document.createElement("p");
+    p.className = "line";
+    p.style.setProperty("--i", i);
+    p.textContent = text;
+    msg.appendChild(p);
+  });
+
+  const grid = $("reasons");
+  CONFIG.reasons.forEach((text, i) => {
+    const card = document.createElement("div");
+    card.className = "reason";
+
+    const emoji = document.createElement("span");
+    emoji.className = "reason__emoji";
+    emoji.textContent = CONFIG.emojis[i % CONFIG.emojis.length];
+
+    const p = document.createElement("p");
+    p.className = "reason__text";
+    p.textContent = text;
+
+    card.appendChild(emoji);
+    card.appendChild(p);
+    grid.appendChild(card);
+  });
+
+  const now = new Date();
+  $("today").textContent =
+    "في يوم " + now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear();
+}
+
+/* ==========================================================
+   =================  شاشة القفل والأسئلة  =================
+   ========================================================== */
+function shake(el){
+  el.classList.remove("is-shake");
+  void el.offsetWidth; // إعادة تشغيل الأنيميشن
+  el.classList.add("is-shake");
+}
+
+/* ----- الخطوة 1: التاريخ ----- */
+function tryDate(){
+  const d = +$("day").value;
+  const m = +$("month").value;
+  const y = +$("year").value;
+  const msg = $("gateMsg");
+
+  if (!d || !m || !y){
+    shake($("gateCard"));
+    msg.textContent = "اختاري اليوم والشهر والسنة الأول 📅";
+    return;
+  }
+
+  const ok = d === CONFIG.correctDate.day &&
+             m === CONFIG.correctDate.month &&
+             y === CONFIG.correctDate.year;
+
+  if (ok){
+    msg.textContent = "";
+    $("gateHint").hidden = true;
+    showGateQuestion(0);
+  } else {
+    gateFails++;
+    shake($("gateCard"));
+    msg.textContent = gateFails === 1 ? "مش ده التاريخ.. جربي تاني ❤️" :
+                      gateFails === 2 ? "لسه غلط.. فكّري كويس 😌" :
+                                        "قاوية! بس القلب لسه مستنيكِ 😅";
+    if (gateFails === 2 && CONFIG.dateHint){
+      const hint = $("gateHint");
+      hint.textContent = CONFIG.dateHint;
+      hint.hidden = false;
+    }
+  }
+}
+
+/* ----- الخطوة 2 و3: أسئلة القفل ----- */
+function showGateQuestion(index){
+  const q = CONFIG.gateQuestions[index];
+  gateFails = 0;
+
+  $("dateBlock").hidden = true;
+  $("quizBlock").hidden = false;
+  $("gateTitle").textContent = "قبل ما نفتح.. سؤالين بس 😌";
+  $("gateText").textContent = "جاوبى صح عشان القلب يتفتح ❤️";
+  $("quizQ").textContent = q.q;
+  $("gateMsg").textContent = "";
+  $("gateMsg").classList.remove("is-ok");
+  $("gateHint").hidden = true;
+
+  const box = $("quizOpts");
+  box.innerHTML = "";
+  q.options.forEach(opt => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt";
+    b.textContent = opt;
+    b.addEventListener("click", () => answerGateQuestion(index, opt, b));
+    box.appendChild(b);
+  });
+}
+
+function answerGateQuestion(index, value, btn){
+  const q = CONFIG.gateQuestions[index];
+  const msg = $("gateMsg");
+
+  if (value === q.answer){
+    btn.classList.add("is-correct");
+    msg.textContent = q.ok;
+    msg.classList.add("is-ok");
+    burst(window.innerWidth / 2, window.innerHeight / 2, 22);
+
+    setTimeout(() => {
+      if (index + 1 < CONFIG.gateQuestions.length){
+        showGateQuestion(index + 1);
+      } else {
+        unlock(true);
+      }
+    }, 750);
+  } else {
+    gateFails++;
+    btn.classList.add("is-wrong");
+    setTimeout(() => btn.classList.remove("is-wrong"), 600);
+    msg.classList.remove("is-ok");
+    msg.textContent = q.fail;
+
+    if (gateFails === 2 && q.hint){
+      const hint = $("gateHint");
+      hint.textContent = q.hint;
+      hint.hidden = false;
+    }
+  }
+}
+
+/* ----- فتح القفل والانتقال للصفحة ----- */
+function unlock(animate){
+  try { sessionStorage.setItem("heartUnlocked", "1"); } catch(e){}
+
+  const gate = $("gate");
+  const page = $("page");
+
+  const showPage = () => {
+    page.hidden = false;
+    page.classList.add("is-visible"); // مباشرة من غير rAF عشان المحتوى يظهر أكيد
+    window.scrollTo(0, 0);
+  };
+
+  if (!animate){
+    gate.hidden = true;
+    showPage();
+    return;
+  }
+
+  setTimeout(() => {
+    $("flash").classList.add("is-on");
+    burst(window.innerWidth / 2, window.innerHeight / 2, 70);
+    gate.classList.add("is-gone");
+
+    setTimeout(() => {
+      gate.hidden = true;
+      showPage();
+    }, 620);
+  }, 350);
+}
+
+/* ==========================================================
+   ==============  سؤال فوق الرسالة + الرسالة  =============
+   ========================================================== */
+function setupLoveQuiz(){
+  const q = CONFIG.loveQuestion;
+  const box = $("loveOpts");
+  box.innerHTML = "";
+  q.options.forEach(opt => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt";
+    b.textContent = opt;
+    b.addEventListener("click", () => answerLoveQuestion(opt, b));
+    box.appendChild(b);
+  });
+}
+
+function answerLoveQuestion(value, btn){
+  const q = CONFIG.loveQuestion;
+  const msg = $("loveMsg");
+
+  if (value === q.answer){
+    btn.classList.add("is-correct");
+    msg.textContent = q.ok;
+    msg.classList.add("is-ok");
+    try { sessionStorage.setItem("loveQuizDone", "1"); } catch(e){}
+
+    setTimeout(() => revealLetter(true), 700);
+  } else {
+    loveFails++;
+    btn.classList.add("is-wrong");
+    setTimeout(() => btn.classList.remove("is-wrong"), 600);
+    msg.classList.remove("is-ok");
+    msg.textContent = q.fail[Math.min(loveFails - 1, q.fail.length - 1)];
+
+    if (loveFails === 2 && q.hint){
+      const hint = document.createElement("p");
+      hint.className = "quiz__hint";
+      hint.textContent = q.hint;
+      if (!document.querySelector(".quiz__hint")) msg.after(hint);
+    }
+  }
+}
+
+/* ----- إظهار الرسالة بعد الإجابة الصح ----- */
+function revealLetter(celebrate){
+  const card = $("letterCard");
+  if (!card.hidden) return;
+
+  card.hidden = false;
+  card.classList.add("is-open");
+
+  if (celebrate){
+    burst(window.innerWidth / 2, window.innerHeight / 2, 60);
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 450);
+  }
+}
+
+/* ==========================================================
+   ==================  عداد الأيام  ========================
+   ========================================================== */
+function tick(){
+  const start = new Date(CONFIG.correctDate.year, CONFIG.correctDate.month - 1, CONFIG.correctDate.day, 0, 0, 0);
+  const secs = Math.max(0, Math.floor((Date.now() - start.getTime()) / 1000));
+
+  $("cDays").textContent  = Math.floor(secs / 86400);
+  $("cHours").textContent = Math.floor(secs % 86400 / 3600);
+  $("cMins").textContent  = Math.floor(secs % 3600 / 60);
+  $("cSecs").textContent  = secs % 60;
+}
+
+/* ---------- ظهور الأقسام عند التمرير ---------- */
+function setupReveal(){
+  const items = Array.from(document.querySelectorAll(".reveal"));
+  if (!("IntersectionObserver" in window)){
+    items.forEach(el => el.classList.add("is-visible"));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add("is-visible");
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.18 });
+  items.forEach(el => io.observe(el));
+
+  /* شبكة أمان: لو الـ IntersectionObserver ما اشتغلش (نافذة مصغّرة مثلاً)،
+     نكشف أي قسم ظاهر في الشاشة يدوياً */
+  const safety = setInterval(() => {
+    let pending = 0;
+    items.forEach(el => {
+      if (el.classList.contains("is-visible")) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.9 && r.bottom > 0){
+        el.classList.add("is-visible");
+        io.unobserve(el);
+      } else {
+        pending++;
+      }
+    });
+    if (pending === 0) clearInterval(safety);
+  }, 700);
+}
+
+/* ==========================================================
+   ==============  قلوب الخلفية والاحتفال  =================
+   ========================================================== */
+const canvas = $("bg");
+const ctx = canvas.getContext("2d");
+const COLORS = ["#ff4d8d","#ff8fab","#ffd166","#c77dff","#ff2d75","#ff5c8a"];
+let W = 0, H = 0;
+const ambient = [];
+const particles = [];
+
+function resize(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function rand(a, b){ return a + Math.random() * (b - a); }
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+function makeAmbient(fromBottom){
+  return {
+    x: rand(0, W),
+    y: fromBottom ? H + rand(20, 160) : rand(-50, H),
+    size: rand(6, 17),
+    speed: rand(0.25, 0.85),
+    sway: rand(0.4, 1.3),
+    phase: rand(0, Math.PI * 2),
+    rot: rand(-0.35, 0.35),
+    color: pick(COLORS),
+    alpha: rand(0.2, 0.65)
+  };
+}
+
+function initAmbient(){
+  const count = REDUCED ? 10 : Math.min(42, Math.max(16, Math.round(W / 40)));
+  ambient.length = 0;
+  for (let i = 0; i < count; i++) ambient.push(makeAmbient(false));
+}
+
+/* رسم قلب واحد */
+function drawHeart(x, y, s, rot, color, alpha){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.scale(s, s);
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(-0.5, -0.5, -1, 0.1, 0, 0.8);
+  ctx.bezierCurveTo(1, 0.1, 0.5, -0.5, 0, 0);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+/* انفجار قلوب عند الفتح أو عند الضغط */
+function burst(x, y, count){
+  const n = REDUCED ? Math.min(15, count) : count;
+  for (let i = 0; i < n; i++){
+    const angle = rand(0, Math.PI * 2);
+    const power = rand(2.5, 11);
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * power,
+      vy: Math.sin(angle) * power - 2,
+      size: rand(6, 15),
+      rot: rand(0, Math.PI * 2),
+      vr: rand(-0.12, 0.12),
+      color: pick(COLORS),
+      life: 1,
+      decay: rand(0.008, 0.017)
+    });
+  }
+}
+
+function loop(){
+  ctx.clearRect(0, 0, W, H);
+
+  // القلوب المتصاعدة
+  for (const h of ambient){
+    h.y -= h.speed;
+    h.phase += 0.012;
+    h.x += Math.sin(h.phase) * h.sway;
+    if (h.y < -60) Object.assign(h, makeAmbient(true));
+    drawHeart(h.x, h.y, h.size, h.rot + Math.sin(h.phase) * 0.2, h.color, h.alpha);
+  }
+
+  // قلوب الانفجار
+  for (let i = particles.length - 1; i >= 0; i--){
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.13;      // جاذبية
+    p.vx *= 0.985;     // مقاومة الهواء
+    p.vy *= 0.985;
+    p.rot += p.vr;
+    p.life -= p.decay;
+    if (p.life <= 0){ particles.splice(i, 1); continue; }
+    drawHeart(p.x, p.y, p.size, p.rot, p.color, Math.max(0, p.life));
+  }
+
+  requestAnimationFrame(loop);
+}
+
+/* قلوب صغيرة بتتبع المؤشر */
+let lastTrail = 0;
+function trailAt(x, y, now){
+  if (REDUCED || now - lastTrail < 130) return;
+  lastTrail = now;
+  const el = document.createElement("span");
+  el.className = "trail";
+  el.textContent = pick(["❤️","💖","💕"]);
+  el.style.left = x + "px";
+  el.style.top = y + "px";
+  el.style.setProperty("--dx", rand(-28, 28) + "px");
+  el.style.setProperty("--rot", rand(-40, 40) + "deg");
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 950);
+}
+
+/* ==========================================================
+   ==================  التشغيل  ============================
+   ========================================================== */
+buildSelects();
+fillContent();
+setupLoveQuiz();
+setupReveal();
+tick();
+setInterval(tick, 1000);
+
+$("unlockBtn").addEventListener("click", tryDate);
+document.querySelectorAll(".gate__date select").forEach(sel => {
+  sel.addEventListener("change", () => { $("gateMsg").textContent = ""; });
+  sel.addEventListener("keydown", (e) => { if (e.key === "Enter") tryDate(); });
+});
+
+// قلوب عند الضغط في أي مكان بعد الفتح
+document.addEventListener("pointerdown", (e) => {
+  if (!$("page").hidden) burst(e.clientX, e.clientY, 6);
+});
+document.addEventListener("pointermove", (e) => {
+  if (!$("page").hidden) trailAt(e.clientX, e.clientY, performance.now());
+});
+
+// خلفية القلوب
+window.addEventListener("resize", () => { resize(); initAmbient(); });
+resize();
+initAmbient();
+requestAnimationFrame(loop);
+
+/* فتح تلقائي: لو اللينك فيه skip (للمعاينة) أو لو الصفحة اتفتحت قبل كده
+   أو لو سؤال الرسالة كان اتجاب عنه قبل كده */
+const params = new URLSearchParams(location.search);
+let unlockedBefore = false, quizDoneBefore = false;
+try {
+  unlockedBefore = sessionStorage.getItem("heartUnlocked") === "1";
+  quizDoneBefore  = sessionStorage.getItem("loveQuizDone") === "1";
+} catch(e){}
+
+if (params.has("skip") || unlockedBefore) unlock(false);
+if (params.has("skip") || quizDoneBefore) revealLetter(false);
+
+</script>
+</body>
+</html>

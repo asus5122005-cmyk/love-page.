@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أهلاً يا سندريلا 🎀</title>
+  <meta name="description" content="رسالة صغيرة من القلب.. مخفية ورا قفل بحب" />
+  <meta name="theme-color" content="#12071f" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- خطوط عربية (لو مفيش إنترنت هيرجع للخط الافتراضي تلقائياً) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700;900&family=Lemonada:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- خلفية القلوب المتحرّكة -->
+  <canvas id="bg" aria-hidden="true"></canvas>
+
+  <!-- ومضة ضوء عند فتح القفل -->
+  <div id="flash" aria-hidden="true"></div>
+
+  <!-- ============ الموسيقى ============ -->
+  <audio id="bgMusic" src="music.mp3" loop preload="auto"></audio>
+
+  <button class="musicBtn" id="musicBtn" type="button" aria-label="تشغيل أو إيقاف الموسيقى" aria-pressed="true">
+    <span class="musicBtn__icon" aria-hidden="true">🎵</span>
+    <span class="musicBtn__eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+
+  <noscript>
+    <p style="text-align:center;padding:40px;font-family:sans-serif">
+      لازم تفعّل JavaScript عشان الصفحة تشتغل ❤️
+    </p>
+  </noscript>
+
+  <!-- ============ شاشة القفل + الأسئلة ============ -->
+  <section class="gate" id="gate">
+    <div class="gate__card" id="gateCard">
+
+      <div class="gate__heartWrap">
+        <span class="gate__ring"></span>
+        <span class="gate__ring gate__ring--2"></span>
+        <span class="gate__heart">❤️</span>
+      </div>
+
+      <p class="gate__kicker" id="gateKicker">مقفولة بقلوب كتير</p>
+      <h1 class="gate__title" id="gateTitle">مفتاح القلب</h1>
+      <p class="gate__text" id="gateText">عشان الصفحة تتفتح، اكتبي التاريخ اللي اتقابلنا فيه ❤️</p>
+
+      <!-- الخطوة 1: التاريخ -->
+      <div id="dateBlock">
+        <div class="gate__date">
+          <select id="day" aria-label="اليوم"></select>
+          <select id="month" aria-label="الشهر"></select>
+          <select id="year" aria-label="السنة"></select>
+        </div>
+        <button class="btn" id="unlockBtn" type="button">افتحي القلب ❤</button>
+      </div>
+
+      <!-- الخطوة 2 و3: أسئلة بعد التاريخ -->
+      <div class="gate__quiz" id="quizBlock" hidden>
+        <p class="gate__q" id="quizQ"></p>
+        <div class="gate__opts" id="quizOpts"></div>
+      </div>
+
+      <p class="gate__msg" id="gateMsg" role="status"></p>
+      <p class="gate__hint" id="gateHint" hidden></p>
+    </div>
+  </section>
+
+  <!-- ============ الصفحة بعد الفتح ============ -->
+  <main class="page" id="page" hidden>
+
+    <header class="hero reveal">
+      <p class="hero__kicker" id="kicker"></p>
+      <h1 class="hero__title" id="title"></h1>
+      <p class="hero__sub" id="subtitle"></p>
+
+      <a class="btn hero__cta" href="#letter" id="cta">دوسي هنا عشان تقري الرسالة 💌</a>
+
+      <p class="counter__label">من يوم ما اتقابلنا لحد النهارده ☺️</p>
+      <div class="counter">
+        <div class="counter__box">
+          <span class="counter__num" id="cDays">0</span>
+          <span class="counter__unit">يوم</span>
+        </div>
+        <div class="counter__box">
+          <span class="counter__num" id="cHours">0</span>
+          <span class="counter__unit">ساعة</span>
+        </div>
+        <div class="counter__box">
+          <span class="counter__num" id="cMins">0</span>
+          <span class="counter__unit">دقيقة</span>
+        </div>
+        <div class="counter__box">
+          <span class="counter__num" id="cSecs">0</span>
+          <span class="counter__unit">ثانية</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ الرسالة ============ -->
+    <section class="letter reveal" id="letter">
+
+      <!-- سؤال فوق الرسالة -->
+      <div class="quiz" id="loveQuiz">
+        <span class="quiz__emoji" aria-hidden="true">💭</span>
+        <p class="quiz__label">السؤال الأول..</p>
+        <p class="quiz__q" id="loveQ"></p>
+        <div class="quiz__opts" id="loveOpts"></div>
+        <p class="quiz__msg" id="loveMsg" role="status"></p>
+      </div>
+
+      <!-- الرسالة نفسها -->
+      <div class="letter__card" id="letterCard" hidden>
+        <span class="letter__stamp" aria-hidden="true">💌</span>
+        <h2 class="section__title">رسالة مني ليكِ</h2>
+        <div class="letter__body" id="message"></div>
+        <p class="letter__sign" id="sign"></p>
+      </div>
+    </section>
+
+    <!-- ============ الأسباب ============ -->
+    <section class="reasons reveal">
+      <h2 class="section__title">ليه بحبك؟ 💖</h2>
+      <div class="reasons__grid" id="reasons"></div>
+    </section>
+
+    <footer class="footer reveal">
+      <p id="footerText"></p>
+      <p class="footer__date" id="today"></p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
